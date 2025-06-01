@@ -1,0 +1,202 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="BABSA_Annotation_Tool.App"
+             xmlns:local="using:BABSA_Annotation_Tool"
+             RequestedThemeVariant="Default">
+	<!-- "Default" ThemeVariant follows system theme variant. You can also use "Dark" or "Light" -->
+	<Application.DataTemplates>
+		<local:ViewLocator/>
+	</Application.DataTemplates>
+
+	<Application.Styles>
+		<FluentTheme />
+
+		<!-- Custom styles for a modern, cohesive look -->
+		<Style Selector="Window">
+			<Setter Property="Background" Value="{DynamicResource ApplicationBackgroundBrush}"/>
+		</Style>
+
+		<!-- Main Container Styles -->
+		<Style Selector="DockPanel.main-container">
+			<Setter Property="Margin" Value="0"/>
+		</Style>
+
+		<!-- Top Bar Styling -->
+		<Style Selector="Border.top-bar">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+			<Setter Property="BorderThickness" Value="0,0,0,1"/>
+			<Setter Property="Padding" Value="16,12"/>
+		</Style>
+
+		<!-- Status Bar Styling -->
+		<Style Selector="Border.status-bar">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+			<Setter Property="BorderThickness" Value="0,1,0,0"/>
+			<Setter Property="Padding" Value="16,8"/>
+			<Setter Property="Height" Value="32"/>
+		</Style>
+
+		<Style Selector="Border.status-bar TextBlock">
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+		</Style>
+
+		<!-- Button Styling -->
+		<Style Selector="Button">
+			<Setter Property="MinHeight" Value="32"/>
+			<Setter Property="MinWidth" Value="80"/>
+			<Setter Property="Padding" Value="12,6"/>
+		</Style>
+
+		<Style Selector="Button.primary">
+			<Setter Property="Background" Value="{DynamicResource SystemAccentColor}"/>
+			<Setter Property="Foreground" Value="White"/>
+		</Style>
+
+		<Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource SystemAccentColorDark1}"/>
+		</Style>
+
+		<Style Selector="Button.danger">
+			<Setter Property="Background" Value="#E53E3E"/>
+			<Setter Property="Foreground" Value="White"/>
+		</Style>
+
+		<Style Selector="Button.danger:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="#C53030"/>
+		</Style>
+
+		<!-- ComboBox Styling -->
+		<Style Selector="ComboBox">
+			<Setter Property="MinHeight" Value="32"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+		</Style>
+
+		<!-- TextBox Styling -->
+		<Style Selector="TextBox">
+			<Setter Property="MinHeight" Value="32"/>
+			<Setter Property="Padding" Value="8,6"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+		</Style>
+
+		<!-- ListBox Styling -->
+		<Style Selector="ListBox.data-list">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="4"/>
+		</Style>
+
+		<Style Selector="ListBox.data-list ListBoxItem">
+			<Setter Property="Padding" Value="0"/>
+			<Setter Property="Margin" Value="0"/>
+		</Style>
+
+		<Style Selector="ListBox.data-list ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource SystemAccentColor}"/>
+		</Style>
+
+		<Style Selector="ListBox.data-list ListBoxItem:selected TextBlock">
+			<Setter Property="Foreground" Value="White"/>
+		</Style>
+
+		<!-- Data Row Item Styling -->
+		<Style Selector="Border.data-row-item">
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+			<Setter Property="BorderThickness" Value="0,0,0,1"/>
+			<Setter Property="Padding" Value="12,8"/>
+			<Setter Property="Background" Value="Transparent"/>
+		</Style>
+
+		<Style Selector="Border.data-row-item:pointerover">
+			<Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
+		</Style>
+
+		<!-- Annotation Panel Styling -->
+		<Style Selector="Border.annotation-panel">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="4"/>
+			<Setter Property="Padding" Value="16"/>
+		</Style>
+
+		<!-- Annotation Card Styling -->
+		<Style Selector="Border.annotation-card">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="4"/>
+			<Setter Property="Padding" Value="12"/>
+			<Setter Property="Margin" Value="0,0,0,8"/>
+		</Style>
+
+		<Style Selector="Border.annotation-card:pointerover">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundListLowBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}"/>
+		</Style>
+
+		<!-- Section Headers -->
+		<Style Selector="TextBlock.section-header">
+			<Setter Property="FontWeight" Value="SemiBold"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="Margin" Value="0,0,0,8"/>
+		</Style>
+
+		<!-- Selected Text Display -->
+		<Style Selector="Border.selected-text-display">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="4"/>
+			<Setter Property="Padding" Value="12"/>
+			<Setter Property="MaxHeight" Value="120"/>
+		</Style>
+
+		<!-- Sentiment Badge Styling -->
+		<Style Selector="Border.sentiment-badge">
+			<Setter Property="CornerRadius" Value="12"/>
+			<Setter Property="Padding" Value="8,4"/>
+			<Setter Property="Margin" Value="0,2,0,0"/>
+		</Style>
+
+		<Style Selector="Border.sentiment-badge.positive">
+			<Setter Property="Background" Value="#10B981"/>
+		</Style>
+
+		<Style Selector="Border.sentiment-badge.negative">
+			<Setter Property="Background" Value="#EF4444"/>
+		</Style>
+
+		<Style Selector="Border.sentiment-badge.neutral">
+			<Setter Property="Background" Value="#6B7280"/>
+		</Style>
+
+		<Style Selector="Border.sentiment-badge.mixed">
+			<Setter Property="Background" Value="#F59E0B"/>
+		</Style>
+
+		<Style Selector="Border.sentiment-badge TextBlock">
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="FontWeight" Value="Medium"/>
+		</Style>
+
+		<!-- GridSplitter Styling -->
+		<Style Selector="GridSplitter">
+			<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+		</Style>
+
+		<Style Selector="GridSplitter:pointerover">
+			<Setter Property="Background" Value="{DynamicResource SystemAccentColor}"/>
+		</Style>
+
+		<!-- Scrollbar Styling -->
+		<Style Selector="ScrollViewer">
+			<Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+		</Style>
+	</Application.Styles>
+</Application>

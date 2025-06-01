@@ -1,0 +1,255 @@
+<!-- START OF FILE MainWindow.axaml -->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:BABSA_Annotation_Tool.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="using:BABSA_Annotation_Tool.Models"
+        xmlns:converters="using:BABSA_Annotation_Tool.Converters" 
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        x:Class="BABSA_Annotation_Tool.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="BABSA Annotation Tool"
+        MinWidth="800"
+        MinHeight="600">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <DockPanel Classes="main-container">
+        <!-- Top Bar: File Operations and Column Selection -->
+        <Border DockPanel.Dock="Top" Classes="top-bar">
+            <Grid ColumnDefinitions="Auto,Auto,20,Auto,Auto,*,Auto">
+                <Button Grid.Column="0" 
+                        Content="📁 Load File" 
+                        Command="{Binding LoadFileCommand}"
+                        Classes="primary"
+                        Margin="0,0,8,0"/>
+                
+                <Button Grid.Column="1" 
+                        Content="💾 Save File" 
+                        Command="{Binding SaveFileCommand}"
+                        Margin="0,0,8,0"/>
+                
+                <Rectangle Grid.Column="2" 
+                           Width="1" 
+                           Fill="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                           Margin="8,0"/>
+                
+                <TextBlock Grid.Column="3" 
+                           Text="Annotate Column:" 
+                           VerticalAlignment="Center"
+                           Margin="0,0,8,0"/>
+                
+                <ComboBox Grid.Column="4"
+                          ItemsSource="{Binding ColumnHeaders}"
+                          SelectedItem="{Binding SelectedAnnotationColumnHeader}"
+                          MinWidth="200"
+                          PlaceholderText="Select a column to annotate"/>
+                
+                <!-- Theme Toggle Button -->
+                <Button Grid.Column="6" 
+                        Content="🌙" 
+                        ToolTip.Tip="Toggle Theme"
+                        Click="OnThemeToggleClick"
+                        Width="32"
+                        MinWidth="32"
+                        Padding="0"/>
+            </Grid>
+        </Border>
+
+        <!-- Status Bar -->
+        <Border DockPanel.Dock="Bottom" Classes="status-bar">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" 
+                           Text="{Binding StatusMessage}" 
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" 
+                           Text="{Binding DataRows.Count, StringFormat='Rows: {0}'}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           Margin="16,0,0,0"/>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Margin="16" ColumnDefinitions="*,Auto,2*" RowDefinitions="*">
+            <!-- Left Panel: Data List -->
+            <Grid Grid.Column="0" RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0" 
+                           Text="Data Rows" 
+                           Classes="section-header"
+                           Margin="0,0,0,8"/>
+                
+                <ListBox Grid.Row="1" 
+                         Classes="data-list"
+                         ItemsSource="{Binding DataRows}"
+                         SelectedItem="{Binding SelectedDataRow}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Classes="data-row-item">
+                                <Grid RowDefinitions="Auto,Auto">
+                                    <TextBlock Grid.Row="0" 
+                                               Text="{Binding TextToAnnotate}" 
+                                               TextWrapping="Wrap"
+                                               FontSize="13"/>
+                                    <StackPanel Grid.Row="1" 
+                                                Orientation="Horizontal" 
+                                                Margin="0,4,0,0"
+                                                IsVisible="{Binding Annotations.Count}">
+                                        <TextBlock Text="📌" 
+                                                   FontSize="11" 
+                                                   Margin="0,0,4,0"/>
+                                        <TextBlock Text="{Binding Annotations.Count}" 
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                        <TextBlock Text=" annotations" 
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+
+            <GridSplitter Grid.Column="1" 
+                          Width="8" 
+                          Margin="8,0"
+                          HorizontalAlignment="Center" 
+                          VerticalAlignment="Stretch"/>
+            
+            <!-- Right Panel: Annotation Area -->
+            <Border Grid.Column="2" 
+                    Classes="annotation-panel"
+                    IsVisible="{Binding SelectedDataRow, Converter={x:Static converters:ObjectConverters.IsNotNull}}">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
+                    <!-- Selected Text Display -->
+                    <TextBlock Grid.Row="0" 
+                               Text="Selected Text" 
+                               Classes="section-header"/>
+                    
+                    <Border Grid.Row="1" 
+                            Classes="selected-text-display"
+                            Margin="0,0,0,16">
+                        <ScrollViewer MaxHeight="100">
+                            <TextBlock Text="{Binding SelectedDataRow.TextToAnnotate}" 
+                                       TextWrapping="Wrap"
+                                       FontSize="13"/>
+                        </ScrollViewer>
+                    </Border>
+                    
+                    <!-- New Annotation Form -->
+                    <TextBlock Grid.Row="2" 
+                               Text="Add New Annotation" 
+                               Classes="section-header"
+                               Margin="0,8,0,8"/>
+                    
+                    <Grid Grid.Row="3" 
+                          RowDefinitions="Auto,8,Auto,8,Auto"
+                          Margin="0,0,0,16">
+                        <TextBox Grid.Row="0"
+                                 Watermark="Enter aspect (e.g., Price, Service, Quality)" 
+                                 Text="{Binding NewAspectText}"/>
+                        
+                        <ComboBox Grid.Row="2"
+                                  PlaceholderText="Select sentiment"
+                                  ItemsSource="{Binding AvailableSentiments}"
+                                  SelectedItem="{Binding NewSentimentText}"/>
+                        
+                        <Button Grid.Row="4" 
+                                Content="➕ Add Annotation" 
+                                Command="{Binding AddAnnotationCommand}"
+                                Classes="primary"
+                                HorizontalAlignment="Left"
+                                Margin="0,8,0,0"/>
+                    </Grid>
+
+                    <!-- Existing Annotations -->
+                    <Grid Grid.Row="4" RowDefinitions="Auto,*">
+                        <TextBlock Grid.Row="0" 
+                                   Text="Annotations" 
+                                   Classes="section-header"
+                                   Margin="0,8,0,8"/>
+                        
+                        <ScrollViewer Grid.Row="1">
+                            <ItemsControl ItemsSource="{Binding SelectedDataRow.Annotations}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:Annotation">
+                                        <Border Classes="annotation-card">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <StackPanel Grid.Column="0" Spacing="4">
+                                                    <Grid ColumnDefinitions="Auto,*">
+                                                        <TextBlock Grid.Column="0" 
+                                                                   Text="Aspect: " 
+                                                                   FontWeight="Medium"
+                                                                   FontSize="13"/>
+                                                        <TextBlock Grid.Column="1" 
+                                                                   Text="{Binding Aspect}"
+                                                                   FontSize="13"
+                                                                   TextWrapping="Wrap"/>
+                                                    </Grid>
+                                                    
+                                                    <Grid ColumnDefinitions="Auto,Auto">
+                                                        <TextBlock Grid.Column="0" 
+                                                                   Text="Sentiment: " 
+                                                                   FontWeight="Medium"
+                                                                   FontSize="13"
+                                                                   Margin="0,0,8,0"/>
+                                                        <Border Grid.Column="1"
+                                                                Classes="sentiment-badge"
+                                                                Classes.positive="{Binding Sentiment, Converter={x:Static converters:StringConverters.Equals}, ConverterParameter=Positive}"
+                                                                Classes.negative="{Binding Sentiment, Converter={x:Static converters:StringConverters.Equals}, ConverterParameter=Negative}"
+                                                                Classes.neutral="{Binding Sentiment, Converter={x:Static converters:StringConverters.Equals}, ConverterParameter=Neutral}"
+                                                                Classes.mixed="{Binding Sentiment, Converter={x:Static converters:StringConverters.Equals}, ConverterParameter=Mixed}">
+                                                            <TextBlock Text="{Binding Sentiment}"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </StackPanel>
+                                                
+                                                <Button Grid.Column="1" 
+                                                        Content="🗑️"
+                                                        ToolTip.Tip="Remove annotation"
+                                                        Command="{Binding $parent[ItemsControl].((vm:MainWindowViewModel)DataContext).RemoveAnnotationCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Classes="danger"
+                                                        Width="32"
+                                                        MinWidth="32"
+                                                        Padding="0"
+                                                        VerticalAlignment="Center"
+                                                        Margin="8,0,0,0"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </Border>
+            
+            <!-- Empty State -->
+            <Border Grid.Column="2" 
+                    IsVisible="{Binding SelectedDataRow, Converter={x:Static converters:ObjectConverters.IsNull}}"
+                    Classes="annotation-panel">
+                <StackPanel VerticalAlignment="Center" 
+                            HorizontalAlignment="Center" 
+                            Spacing="8">
+                    <TextBlock Text="📝" 
+                               FontSize="48" 
+                               HorizontalAlignment="Center"
+                               Opacity="0.3"/>
+                    <TextBlock Text="Select a row to start annotating" 
+                               FontSize="16"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
+<!-- END OF FILE MainWindow.axaml -->
