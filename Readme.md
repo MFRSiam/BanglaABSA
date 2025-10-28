@@ -70,7 +70,9 @@ iii. Reproduce results reported in our paper
 
 
 Contributing
+
 We welcome contributions!
 
 Contact
+
 For questions, reach out to: mfrforhad1@gmail.com
