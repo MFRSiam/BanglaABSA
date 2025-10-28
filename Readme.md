@@ -10,7 +10,6 @@ We also benchmark BABSA using baseline and fine-tuned Large Language Models (LLM
 
 
 Features
-
 1. High-quality annotations: Carefully annotated for aspect-level sentiment analysis.
 2. Diverse sources: Combines multiple existing datasets and new web-scraped data.
 3. Model benchmarks: Includes evaluation results for popular LLMs and fine-tuned models.
@@ -34,6 +33,7 @@ Sources:
 All data is preprocessed and formatted for easy use in ABSA experiments.
 
 
+
 Installation / Usage
 
 To use the dataset or run experiments:
@@ -43,8 +43,6 @@ git clone https://github.com/your-username/BABSA.git
 # Navigate to the repo
 cd BABSA
 
-# Install required dependencies (example)
-pip install -r requirements.txt
 ```
 You can then load the dataset in Python or other frameworks for ABSA tasks.
 ```
@@ -71,17 +69,6 @@ ii. Benchmark performance
 iii. Reproduce results reported in our paper
 
 
-Citation
-
-If you use BABSA in your research, please cite our paper:
-```
-@article{your2025babsa,
-  title={BABSA: Bangla Aspect-Based Sentiment Analysis},
-  author={Your Name et al.},
-  journal={arXiv / Journal Name},
-  year={2025}
-}
-```
 Contributing
 We welcome contributions!
 
